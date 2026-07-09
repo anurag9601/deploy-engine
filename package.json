@@ -13,11 +13,13 @@
   "license": "ISC",
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {
+    "@types/dockerode": "^4.0.1",
     "@types/express": "^5.0.6",
     "tsc-watch": "^7.2.1",
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "dockerode": "^5.0.1",
     "express": "^5.2.1"
   }
 }
