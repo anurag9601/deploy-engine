@@ -3,7 +3,7 @@ import appRouter from "./router";
 import Docker from "dockerode";
 
 export const docker = new Docker({
-    socketPath: "//./pipe/docker_engine"
+    socketPath: "/var/run/docker.sock"
 });
 
 const MANAGEMENT_APP = express();

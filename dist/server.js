@@ -8,7 +8,7 @@ const express_1 = __importDefault(require("express"));
 const router_1 = __importDefault(require("./router"));
 const dockerode_1 = __importDefault(require("dockerode"));
 exports.docker = new dockerode_1.default({
-    socketPath: "//./pipe/docker_engine"
+    socketPath: "/var/run/docker.sock"
 });
 const MANAGEMENT_APP = (0, express_1.default)();
 MANAGEMENT_APP.use(express_1.default.json());
