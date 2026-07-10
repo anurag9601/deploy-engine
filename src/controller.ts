@@ -19,8 +19,6 @@ export async function createAndRunContainerController(req: Request, res: Respons
 
         const dockerImages = await docker.listImages();
 
-        console.log("present images", dockerImages);
-
         for (let image of dockerImages) {
             for (let tag of image.RepoTags as string[]) {
                 if (tag === `${img}:${tag}`) {

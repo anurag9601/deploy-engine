@@ -11,20 +11,33 @@ export function pullDockerImg(img: string, tag: string): Promise<pullDockerImgRe
         const imageToPull = `${img}:${tag}`;
         docker.pull(imageToPull, {}, (err, stream) => {
             if (err) {
-                rej(err);
-            };
+                return rej(err);
+            }
 
-            docker.modem.followProgress(stream as any, (doneErr, output) => {
-                if (doneErr) {
-                    rej({ success: false, error: doneErr });
-                };
+            if (!stream) {
+                return rej(new Error("Docker returned a null stream."));
+            }
 
-                return res({ success: true, message: `${img}:${tag} image successfully pulled.` });
-            }, (event) => {
-                if (event.status) {
-                    console.log(`[Pull ${img}:${tag}] ${event.status}:${event.process ? event.process : ""}`)
+            docker.modem.followProgress(
+                stream,
+                (doneErr) => {
+                    if (doneErr) {
+                        return rej(doneErr);
+                    }
+
+                    return res({
+                        success: true,
+                        message: `${imageToPull} image successfully pulled.`,
+                    });
+                },
+                (event) => {
+                    if (event.status) {
+                        console.log(
+                            `[Pull ${imageToPull}] ${event.status} ${event.progress || ""}`
+                        );
+                    }
                 }
-            })
-        })
+            );
+        });
     });
 };

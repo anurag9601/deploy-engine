@@ -27,7 +27,6 @@ function createAndRunContainerController(req, res) {
             const { img, tag } = req.body;
             let isImageAvailable = false;
             const dockerImages = yield server_1.docker.listImages();
-            console.log("present images", dockerImages);
             for (let image of dockerImages) {
                 for (let tag of image.RepoTags) {
                     if (tag === `${img}:${tag}`) {

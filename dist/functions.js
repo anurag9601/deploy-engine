@@ -8,18 +8,22 @@ function pullDockerImg(img, tag) {
         const imageToPull = `${img}:${tag}`;
         server_1.docker.pull(imageToPull, {}, (err, stream) => {
             if (err) {
-                rej(err);
+                return rej(err);
             }
-            ;
-            server_1.docker.modem.followProgress(stream, (doneErr, output) => {
+            if (!stream) {
+                return rej(new Error("Docker returned a null stream."));
+            }
+            server_1.docker.modem.followProgress(stream, (doneErr) => {
                 if (doneErr) {
-                    rej({ success: false, error: doneErr });
+                    return rej(doneErr);
                 }
-                ;
-                return res({ success: true, message: `${img}:${tag} image successfully pulled.` });
+                return res({
+                    success: true,
+                    message: `${imageToPull} image successfully pulled.`,
+                });
             }, (event) => {
                 if (event.status) {
-                    console.log(`[Pull ${img}:${tag}] ${event.status}:${event.process ? event.process : ""}`);
+                    console.log(`[Pull ${imageToPull}] ${event.status} ${event.progress || ""}`);
                 }
             });
         });
