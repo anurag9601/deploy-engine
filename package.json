@@ -19,7 +19,9 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@types/http-proxy": "^1.17.17",
     "dockerode": "^5.0.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "http-proxy": "^1.18.1"
   }
 }

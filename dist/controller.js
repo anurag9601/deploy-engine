@@ -50,13 +50,17 @@ function createAndRunContainerController(req, res) {
                     AutoRemove: true
                 }
             });
+            const network = server_1.docker.getNetwork("deploy-engine-network");
             yield container.start();
             const inspect = yield container.inspect();
+            yield network.connect({
+                Container: inspect.Id
+            });
             return res.json({
                 success: true,
                 container: {
                     name: inspect.Name,
-                    host: `${inspect.Name}.${server_1.HOST}`
+                    host: `http://${inspect.Name}.${server_1.HOST}`
                 }
             }).status(200);
         }

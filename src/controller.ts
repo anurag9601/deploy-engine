@@ -43,15 +43,21 @@ export async function createAndRunContainerController(req: Request, res: Respons
             }
         });
 
+        const network = docker.getNetwork("deploy-engine-network");
+
         await container.start();
 
         const inspect = await container.inspect();
+
+        await network.connect({
+            Container: inspect.Id
+        });
 
         return res.json({
             success: true,
             container: {
                 name: inspect.Name,
-                host: `${inspect.Name}.${HOST}`
+                host: `http://${inspect.Name}.${HOST}`
             }
         }).status(200);
 
